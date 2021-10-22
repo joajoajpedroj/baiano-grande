@@ -13,17 +13,18 @@ class Trigger:
 		self.audios = audios
 	
 	def on_press(self, key):
-		# Stop if stopKey is pressed
-		if key == self.stopKey:
-			return False
 		# Get the key
 		try:
 			k = key.char
 		except AttributeError:
 			k = key.name
+		# Stop if stopKey is pressed
+		if key == self.stopKey:
+			print("stopKey ('{}') was pressed and the program will stop.".format(k))
+			return False
 		# What to do if one of triggerKeys is pressed
 		if k in self.triggerKeys:
-			print("DEBUG: '{}' was pressed and will trigger the audio".format(k))
+			print("DEBUG: '{}' was pressed and will trigger the audio.".format(k))
 			self.audios[0].audio.play()
 			
 
