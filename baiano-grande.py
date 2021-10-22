@@ -1,18 +1,16 @@
 from pynput import keyboard
 from pygame import mixer
 
-mixer.init()
-mixer.music.load("audio.mp3")
-
 class Audio:
 	def __init__(self, file):
 		self.file = file
-		
+		self.audio = mixer.Sound(file=file)
+
 class Trigger:
-	def __init__(self, stopKey = keyboard.Key.home, triggerKeys = ['down'], files = []):
+	def __init__(self, audios, stopKey = keyboard.Key.home, triggerKeys = ['down']):
 		self.stopKey = stopKey
 		self.triggerKeys = triggerKeys
-		self.files = files
+		self.audios = audios
 	
 	def on_press(self, key):
 		# Stop if stopKey is pressed
@@ -26,10 +24,12 @@ class Trigger:
 		# What to do if one of triggerKeys is pressed
 		if k in self.triggerKeys:
 			print("DEBUG: '{}' was pressed and will trigger the audio".format(k))
+			self.audios[0].audio.play()
 			
 
 def main():
-	Triggerer = Trigger()
+	mixer.init()
+	Triggerer = Trigger(audios=[Audio('audio.mp3')])
 
 	# Collect events until released
 	with keyboard.Listener(
