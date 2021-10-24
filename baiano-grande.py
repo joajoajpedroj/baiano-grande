@@ -1,5 +1,6 @@
 from pynput import keyboard
 from pygame import mixer
+import json
 
 class Audio:
 	def __init__(self, file):
@@ -30,7 +31,20 @@ class Trigger:
 
 def main():
 	mixer.init()
-	Triggerer = Trigger(audios=[Audio('audio.mp3')])
+
+	# Read file
+	with open("settings.json", "r") as read_file:
+		# Parse it
+		data = json.load(read_file)
+	
+	# List to be filled with Audio objects
+	audios = []
+	# Iterate on data from file
+	for i in data["audios"]:
+		LoadedAudio = Audio(i["path"])
+		audios.append(LoadedAudio)
+
+	Triggerer = Trigger(audios=audios)
 
 	# Collect events until released
 	with keyboard.Listener(
