@@ -1,11 +1,17 @@
 from pynput import keyboard
 from pygame import mixer
+from random import random
 import json
 
 class Audio:
-	def __init__(self, file):
+	def __init__(self, file, chance):
 		self.file = file
 		self.audio = mixer.Sound(file=file)
+		
+		self.chance = chance/100
+
+	def play(self):
+		self.audio.play()
 
 class Trigger:
 	def __init__(self, audios, stopKey = keyboard.Key.home, triggerKeys = ['down']):
@@ -25,13 +31,21 @@ class Trigger:
 			return False
 		# What to do if one of triggerKeys is pressed
 		if k in self.triggerKeys:
-			print("DEBUG: '{}' was pressed and will trigger the audio.".format(k))
-			self.audios[0].audio.play()
-			
+			print("DEBUG: '{}' was pressed.".format(k))
+			self.select_audio()
+
+	def select_audio(self):
+		nRandom = random()
+		c = 0
+		for i in self.audios:
+			if c < nRandom < (c + i.chance):
+				print("DEBUG: audio {} will be played!".format(i.file))
+				i.play()
+				pass
+			c += i.chance
 
 def main():
 	mixer.init()
-
 	# Read file
 	with open("settings.json", "r") as read_file:
 		# Parse it
@@ -41,7 +55,7 @@ def main():
 	audios = []
 	# Iterate on data from file
 	for i in data["audios"]:
-		LoadedAudio = Audio(i["path"])
+		LoadedAudio = Audio(i["path"], i["chance"])
 		audios.append(LoadedAudio)
 
 	Triggerer = Trigger(audios=audios)

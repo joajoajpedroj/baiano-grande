@@ -1,7 +1,12 @@
 {
 	"audios":[
 		{
-			"path":"audio.mp3"
+			"path":"sample1.mp3",
+			"chance": 10
+		},
+		{
+			"path":"sample2.mp3",
+			"chance": 10
 		}
 	]
 }
