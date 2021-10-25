@@ -1,4 +1,6 @@
 {
+	"stopKey": "home",
+	"triggerKeys": ["down"], 
 	"audios":[
 		{
 			"path":"sample1.mp3",

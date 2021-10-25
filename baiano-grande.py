@@ -14,7 +14,7 @@ class Audio:
 		self.audio.play()
 
 class Trigger:
-	def __init__(self, audios, stopKey = keyboard.Key.home, triggerKeys = ['down']):
+	def __init__(self, audios, stopKey = 'home', triggerKeys = ['down']):
 		self.stopKey = stopKey
 		self.triggerKeys = triggerKeys
 		self.audios = audios
@@ -26,7 +26,7 @@ class Trigger:
 		except AttributeError:
 			k = key.name
 		# Stop if stopKey is pressed
-		if key == self.stopKey:
+		if k == self.stopKey:
 			print("stopKey ('{}') was pressed and the program will stop.".format(k))
 			return False
 		# What to do if one of triggerKeys is pressed
@@ -58,7 +58,7 @@ def main():
 		LoadedAudio = Audio(i["path"], i["chance"])
 		audios.append(LoadedAudio)
 
-	Triggerer = Trigger(audios=audios)
+	Triggerer = Trigger(audios=audios, stopKey=data["stopKey"], triggerKeys=data["triggerKeys"])
 
 	# Collect events until released
 	with keyboard.Listener(
